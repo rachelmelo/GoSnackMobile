@@ -279,7 +279,7 @@ class _ProductDetailsAuxPageState extends State<ProductDetailsAuxPage> {
                                            child: IconButton(
                                              icon: const Icon(Icons.add),
                                              color: Colors.white,
-                                             onPressed: decrementCounter,
+                                             onPressed: incrementCounter,
                                            ),
                                          ),
                                        ],
