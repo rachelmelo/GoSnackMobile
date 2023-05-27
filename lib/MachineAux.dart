@@ -281,59 +281,14 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                       ],
                     ),
 
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 35),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 100,
-                          height: 105,
-                          child: TextButton(
-                            onPressed: null,
-                            style: TextButton.styleFrom (
-                              backgroundColor: const Color.fromRGBO(210, 210, 211, 0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: const EdgeInsets.all(10),
-                            ),
-                            child: const Text(''),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        SizedBox(
-                          width: 100,
-                          height: 105,
-                          child: TextButton(
-                            onPressed: null,
-                            style: TextButton.styleFrom (
-                              backgroundColor: const Color.fromRGBO(210, 210, 211, 0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: const EdgeInsets.all(10),
-                            ),
-                            child: const Text(''),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        SizedBox(
-                          width: 100,
-                          height: 105,
-                          child: TextButton(
-                            onPressed: null,
-                            style: TextButton.styleFrom (
-                              backgroundColor: const Color.fromRGBO(210, 210, 211, 0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: const EdgeInsets.all(10),
-                            ),
-                            child: const Text(''),
-                          ),
-                        ),
-                      ],
+                    const Text(
+                      'Temperatura atual: 5ºC',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                      ),
                     ),
 
                     const SizedBox(height: 30),
