@@ -1,25 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const ProductDetailsAuxPage(title: 'Product Details Aux Page'),
-    );
-  }
-}
-
 class ProductDetailsAuxPage extends StatefulWidget {
   const ProductDetailsAuxPage({super.key, required this.title});
 
@@ -30,22 +10,6 @@ class ProductDetailsAuxPage extends StatefulWidget {
 }
 
 class _ProductDetailsAuxPageState extends State<ProductDetailsAuxPage> {
-
-  int counter = 3;
-
-  void incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
-  void decrementCounter() {
-    setState(() {
-      if(counter > 0) {
-        counter--;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +85,7 @@ class _ProductDetailsAuxPageState extends State<ProductDetailsAuxPage> {
                 child: Column(
                   children: [
                     Image.asset(
-                      'assets/images/KitKat.jpg',
+                      'assets/images/KitKat.png',
                       height: 180,
                     ),
                     const Text(
@@ -205,104 +169,7 @@ class _ProductDetailsAuxPageState extends State<ProductDetailsAuxPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: FilledButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: const Color.fromRGBO(180, 240, 115, 1),
-                                content: Container(
-                                  width: MediaQuery.of(context).size.width * 0.9,
-                                  height: MediaQuery.of(context).size.height * 0.30,
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromRGBO(180, 240, 115, 1),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text(
-                                        'Adicionar KitKat',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 40,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const SizedBox(height: 60),
-                                      Row(
-                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                       children: [
-                                         Container(
-                                           width: 50,
-                                           height: 50,
-                                           decoration: const BoxDecoration(
-                                             color: Color.fromRGBO(225, 225, 225, 1),
-                                             shape: BoxShape.circle,
-                                           ),
-                                           child: IconButton(
-                                             icon: const Icon(Icons.remove),
-                                             color: Colors.white,
-                                             onPressed: decrementCounter,
-                                           ),
-                                         ),
-                                         Container(
-                                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                                           width: 90,
-                                           height: 50,
-                                           decoration: BoxDecoration(
-                                             color: const Color.fromRGBO(225, 225, 225, 1),
-                                             borderRadius: BorderRadius.circular(8),
-                                           ),
-                                           child: Center(
-                                             child: Text(
-                                               counter.toString(),
-                                               style: const TextStyle(
-                                                 color: Colors.white,
-                                                 fontSize: 30,
-                                               ),
-                                             ),
-                                           ),
-                                         ),
-                                         Container(
-                                           width: 50,
-                                           height: 50,
-                                           decoration: const BoxDecoration(
-                                             color: Color.fromRGBO(225, 225, 225, 1),
-                                             shape: BoxShape.circle,
-                                           ),
-                                           child: IconButton(
-                                             icon: const Icon(Icons.add),
-                                             color: Colors.white,
-                                             onPressed: incrementCounter,
-                                           ),
-                                         ),
-                                       ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        } ,
-                        style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll<Color>(Color.fromRGBO(180, 240, 115, 1)),
-                          foregroundColor: MaterialStatePropertyAll<Color>(Colors.white),
-                        ),
-                        child: const Text(
-                          'Adicionar',
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ),

@@ -1,29 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const ProductDetailsPage(title: 'Product Details Page'),
-    );
-  }
-}
+import 'constants.dart' as Constants;
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key, required this.title});
+  const ProductDetailsPage({super.key, required this.productImagePath, required this.productName, required this.slotNumber});
 
-  final String title;
+  final String productImagePath;
+  final String productName;
+  final int slotNumber;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -93,12 +80,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/images/KitKat.jpg',
+                        widget.productImagePath,
                         height: 180,
                       ),
-                      const Text(
-                        'KitKat',
-                        style: TextStyle(
+                      Text(
+                        widget.productName,
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 24,
                         ),
@@ -181,7 +168,54 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: FilledButton(
                           onPressed: () {
-                            //TODO
+                            http.get(Uri.parse("${Constants.URL}/api/vending_machine/1/purchase/${widget.slotNumber}?username=user")).then((value) {
+                              print(jsonDecode(value.body));
+
+                              var j = jsonDecode(value.body);
+
+                              var status = j['status'];
+                              var message = j['message'];
+
+                              if (status == "error") {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Error"),
+                                        content: Text(message),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    }
+                                );
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Success"),
+                                        content: const Text("The product was dispensed"),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    }
+                                );
+                              }
+
+
+                            });
                           } ,
                           style: const ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll<Color>(Color.fromRGBO(180, 240, 115, 1)),

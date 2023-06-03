@@ -1,36 +1,41 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:teste/productDetailAux.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'package:http/http.dart' as http;
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MachineAuxPage(title: 'Machine Aux Page'),
-    );
-  }
-}
+import 'constants.dart' as Constants;
 
 class MachineAuxPage extends StatefulWidget {
-  const MachineAuxPage({super.key, required this.title});
+  MachineAuxPage({super.key, required this.title});
 
   final String title;
+  double temperature = 0;
 
   @override
   State<MachineAuxPage> createState() => _MachineAuxPageState();
 }
 
 class _MachineAuxPageState extends State<MachineAuxPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    updateTemperature();
+  }
+
+  void updateTemperature() async {
+    var response = await http.get(Uri.parse("${Constants.URL}/api/vending_machine/1/temperature"));
+    var j = jsonDecode(response.body);
+    var temperature = j['data'];
+
+    setState(() {
+      widget.temperature = temperature;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,7 +50,10 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                   bottomRight: Radius.circular(45),
                 ),
               ),
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.3,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,7 +108,10 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
               child: Container(
                 color: const Color.fromRGBO(249, 251, 231, 1),
                 alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Column(
                   children: [
@@ -114,10 +125,12 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ProductDetailsAuxPage(title: 'product_detail',)),
+                                MaterialPageRoute(builder: (context) =>
+                                const ProductDetailsAuxPage(
+                                  title: 'product_detail',)),
                               );
                             },
-                            style: ElevatedButton.styleFrom (
+                            style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white60,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -128,7 +141,7 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  'assets/images/KitKat.jpg',
+                                  'assets/images/KitKat.png',
                                   height: 60,
                                 ),
                                 const Text(
@@ -147,8 +160,9 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                             width: 100,
                             child: TextButton(
                               onPressed: null,
-                              style: TextButton.styleFrom (
-                                backgroundColor: const Color.fromRGBO(210, 210, 211, 0.5),
+                              style: TextButton.styleFrom(
+                                backgroundColor: const Color.fromRGBO(
+                                    210, 210, 211, 0.5),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
@@ -182,7 +196,7 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                             onPressed: () {
                               //TODO
                             },
-                            style: ElevatedButton.styleFrom (
+                            style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white60,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -221,7 +235,7 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                             onPressed: () {
                               //TODO
                             },
-                            style: ElevatedButton.styleFrom (
+                            style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white60,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -252,8 +266,9 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                           height: 105,
                           child: TextButton(
                             onPressed: null,
-                            style: TextButton.styleFrom (
-                              backgroundColor: const Color.fromRGBO(210, 210, 211, 0.5),
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(
+                                  210, 210, 211, 0.5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -268,8 +283,9 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                           height: 105,
                           child: TextButton(
                             onPressed: null,
-                            style: TextButton.styleFrom (
-                              backgroundColor: const Color.fromRGBO(210, 210, 211, 0.5),
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(
+                                  210, 210, 211, 0.5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -283,9 +299,9 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
 
                     const SizedBox(height: 35),
 
-                    const Text(
-                      'Temperatura atual: 5ºC',
-                      style: TextStyle(
+                    Text(
+                      'Temperatura atual: ${widget.temperature}ºC',
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 25,
                       ),
@@ -294,14 +310,19 @@ class _MachineAuxPageState extends State<MachineAuxPage> {
                     const SizedBox(height: 30),
 
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.35,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.35,
                       child: FilledButton(
                         onPressed: () {
                           //TODO
-                        } ,
+                        },
                         style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll<Color>(Colors.red),
-                          foregroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+                          backgroundColor: MaterialStatePropertyAll<Color>(
+                              Colors.red),
+                          foregroundColor: MaterialStatePropertyAll<Color>(
+                              Colors.white),
                         ),
                         child: const Text(
                           'Desligar',

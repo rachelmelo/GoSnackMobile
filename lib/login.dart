@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:teste/MachineList_Aux.dart';
 import 'package:teste/initial.dart';
 
+import 'package:http/http.dart' as http;
+
 void main() {
   runApp(const MyApp());
 }
@@ -36,6 +38,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool passwordVisible = false;
 
+  String username = "";
+
   //metodos
 
   @override
@@ -57,10 +61,13 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white),
                 ),
                 const SizedBox(height: 10),
-                Image.asset('assets/images/GoSnackLogo.jpg',
+                Image.asset('assets/images/GoSnackLogo.png',
                   width: 170),
                 const SizedBox(height: 30),
                  TextField(
+                   onChanged: (u) {
+                     username = u;
+                   },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
                     filled: true,
@@ -96,17 +103,38 @@ class _LoginPageState extends State<LoginPage> {
                   width: MediaQuery.of(context).size.width * 0.35,
                   child: FilledButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const InitialPage(title: 'initial',)),
-                      );
+                      print(username);
+                      if (username == "user") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => InitialPage(title: 'initial',)),
+                        );
+
+                      } else if (username == "admin") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MachineList_AuxPage(title: 'machine_list',)),
+                        );
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Invalid username"),
+                                content: const Text("The only two valid usernames are 'user' and 'admin'"),
+                                actions: [
+                                  TextButton(
+                                      child: const Text("Ok"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      }
                     } ,
-                    onLongPress: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MachineList_AuxPage(title: 'machine_list',)),
-                      );
-                    },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
                       foregroundColor: MaterialStatePropertyAll<Color>(Colors.green),

@@ -103,7 +103,7 @@ class _MachinePageState extends State<MachinePage> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ProductDetailsPage(title: 'productDetails',)),
+                                MaterialPageRoute(builder: (context) => const ProductDetailsPage(productImagePath: 'assets/images/KitKat.png', productName: 'Kit Kat', slotNumber: 1,)),
                               );
                             },
                             style: ElevatedButton.styleFrom (
@@ -117,7 +117,7 @@ class _MachinePageState extends State<MachinePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  'assets/images/KitKat.jpg',
+                                  'assets/images/KitKat.png',
                                   height: 60,
                                 ),
                                 const Text(
@@ -133,6 +133,40 @@ class _MachinePageState extends State<MachinePage> {
                         ),
                         const SizedBox(width: 20),
                         SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ProductDetailsPage(productImagePath: 'assets/images/Twix.png', productName: 'Belga', slotNumber: 2,)),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom (
+                              backgroundColor: Colors.white60,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              padding: const EdgeInsets.all(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/Twix.png',
+                                  height: 60,
+                                ),
+                                const Text(
+                                  '1 €',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        /*SizedBox(
                           width: 100,
                           child: TextButton(
                               onPressed: null,
@@ -163,7 +197,7 @@ class _MachinePageState extends State<MachinePage> {
                                 ],
                               ),
                           )
-                        ),
+                        ),*/
                         const SizedBox(width: 20),
                         SizedBox(
                           width: 100,

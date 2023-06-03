@@ -1,33 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:teste/qr_scanner.dart';
+
+import 'constants.dart' as Constants;
 import 'favorites.dart';
 import 'history.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const InitialPage(title: 'Initial Page'),
-    );
-  }
-}
-
 
 class InitialPage extends StatefulWidget {
-  const InitialPage({super.key, required this.title});
+  InitialPage({super.key, required this.title});
 
   final String title;
+
+  String credit = "0";
+
+  List<InitialPageItem> itemList = [];
 
   @override
   State<InitialPage> createState() => _InitialPageState();
@@ -35,13 +25,40 @@ class InitialPage extends StatefulWidget {
 
 class _InitialPageState extends State<InitialPage> {
 
-  final List<InitialPageItem> itemList = [
-    InitialPageItem('KitKat', 'assets/images/KitKat.jpg', '-1€'),
-    InitialPageItem('KitKat', 'assets/images/KitKat.jpg', '-1€'),
-    InitialPageItem('KitKat', 'assets/images/KitKat.jpg', '-1€'),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    updateCredit();
+    updateHistory();
+  }
 
-  //methods
+  void updateCredit() async {
+    var response = await http.get(Uri.parse("${Constants.URL}/users?username=user"));
+    var j = jsonDecode(response.body);
+    var data = j['data'];
+
+    setState(() {
+      var credit = data['credit'];
+      credit ??= 0;
+      widget.credit = "$credit€";
+    });
+  }
+
+  void updateHistory() async {
+    var response = await http.get(Uri.parse("${Constants.URL}/users/history?username=user"));
+    var j = jsonDecode(response.body);
+    
+    var data = j["data"];
+    
+    List<InitialPageItem> items = [];
+    for (var item in data) {
+      items.add(InitialPageItem(item["product_name"], item["product_image"], "-${item["price_paid"]}€"));
+    }
+
+    setState(() {
+      widget.itemList = items;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +76,11 @@ class _InitialPageState extends State<InitialPage> {
               ),
               height: MediaQuery.of(context).size.height * 0.3,
               width: MediaQuery.of(context).size.width,
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: 8),
-                  Text(
+                  const Text(
                     'GoSnack',
                     style: TextStyle(
                       color: Colors.white,
@@ -73,8 +90,8 @@ class _InitialPageState extends State<InitialPage> {
                   ),
                   SizedBox(height: 25),
                   Text(
-                    'Saldo: 2€',
-                    style: TextStyle(
+                    'Saldo: ${widget.credit}',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                     ),
@@ -107,9 +124,9 @@ class _InitialPageState extends State<InitialPage> {
               child: Expanded(
                   child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      itemCount: itemList.length,
+                      itemCount: widget.itemList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ItemWidget(item: itemList[index]);
+                        return ItemWidget(item: widget.itemList[index]);
                       }
                   )
               ),
@@ -141,7 +158,10 @@ class _InitialPageState extends State<InitialPage> {
                   const SizedBox(width: 30),
                   ElevatedButton(
                     onPressed: () {
-                      //TODO mid button
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const QrCodeView()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromRGBO(180, 240, 115, 1),

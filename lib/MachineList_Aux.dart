@@ -1,26 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teste/MachineAux.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MachineList_AuxPage(title: 'Machine List Page'),
-    );
-  }
-}
-
 class MachineList_AuxPage extends StatefulWidget {
   const MachineList_AuxPage({super.key, required this.title});
 
@@ -139,7 +119,7 @@ class _MachineList_AuxPageState extends State<MachineList_AuxPage> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const MachineAuxPage(title: 'Machine Aux Page',)),
+                                      MaterialPageRoute(builder: (context) => MachineAuxPage(title: 'Machine Aux Page',)),
                                     );
                                   },
                                   child: const Icon(

@@ -56,7 +56,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const InitialPage(title: 'initial',)),
+                        MaterialPageRoute(builder: (context) => InitialPage(title: 'initial',)),
                       );
                     },
                     child: const Icon(
