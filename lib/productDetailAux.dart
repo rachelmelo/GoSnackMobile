@@ -168,8 +168,16 @@ class _ProductDetailsAuxPageState extends State<ProductDetailsAuxPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
 
+                    const SizedBox(height: 15),
+
+                    const Text(
+                      'Em stock: 3 un.',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                      ),
+                    ),
                   ],
                 ),
               ),

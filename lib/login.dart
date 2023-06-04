@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   bool passwordVisible = false;
 
   String username = "";
+  String password = "";
 
   //metodos
 
@@ -78,6 +79,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 15),
                 TextField(
+                  onChanged: (p) {
+                    password = p;
+                  },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
                     filled: true,
@@ -104,18 +108,37 @@ class _LoginPageState extends State<LoginPage> {
                   child: FilledButton(
                     onPressed: () {
                       print(username);
-                      if (username == "user") {
+                      if (username == "user" && password != "") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => InitialPage(title: 'initial',)),
                         );
 
-                      } else if (username == "admin") {
+                      } else if (username == "admin" && password != "") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const MachineList_AuxPage(title: 'machine_list',)),
                         );
-                      } else {
+                      } else if (password == "") {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Need password"),
+                                content: const Text("Please type in your password."),
+                                actions: [
+                                  TextButton(
+                                    child: const Text("Ok"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      }
+                      else {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {

@@ -163,6 +163,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ],
                         ),
                       ),
+
+                      const SizedBox(height: 15),
+
+                      const Text(
+                        'Em stock: 3 un.',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                        ),
+                      ),
+
                       const SizedBox(height: 20),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,

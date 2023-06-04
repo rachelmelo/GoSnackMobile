@@ -90,7 +90,7 @@ class _InitialPageState extends State<InitialPage> {
                   ),
                   SizedBox(height: 25),
                   Text(
-                    'Saldo: ${widget.credit}',
+                    'Saldo: ${widget.credit} €',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
