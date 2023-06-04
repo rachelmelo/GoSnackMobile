@@ -1,16 +1,43 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:teste/MachineAux.dart';
+import 'package:teste/machine.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:teste/machine_list/machine_list_widget.dart';
+import 'constants.dart' as Constants;
 
 class MachineList_AuxPage extends StatefulWidget {
   const MachineList_AuxPage({super.key, required this.title});
 
   final String title;
+  final bool isAdmin = true;
 
   @override
   State<MachineList_AuxPage> createState() => _MachineList_AuxPageState();
 }
 
 class _MachineList_AuxPageState extends State<MachineList_AuxPage> {
+
+  var machineList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    updateMachines();
+  }
+  
+  void updateMachines() async {
+    var response = await http.get(Uri.parse('${Constants.URL}/api/vending_machine'));
+    var j = jsonDecode(response.body);
+
+    var machines = j['data'];
+
+    setState(() {
+      machineList = machines;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -76,107 +103,7 @@ class _MachineList_AuxPageState extends State<MachineList_AuxPage> {
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                color: const Color.fromRGBO(249, 251, 231, 1),
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
-
-                    Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        decoration: const BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30),
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Text(
-                                    'Máquina bué fixe',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => MachineAuxPage(title: 'Machine Aux Page',)),
-                                    );
-                                  },
-                                  child: const Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.white,
-                                      size: 35
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                    ),
-                    const SizedBox(height: 20),
-
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.15,
-                      decoration: const BoxDecoration(
-                        color: Colors.black12,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30),
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              'Máquina só fixe',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              //TODO
-                            },
-                            child: const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 35
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            MachineListWidget(machineList: machineList, isAdmin: true,)
           ],
         ),
       ),

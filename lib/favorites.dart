@@ -1,27 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:teste/machine_list/machine_list_widget.dart';
 
 import 'initial.dart';
-import 'machine.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const FavoritesPage(title: 'Favorites Page'),
-    );
-  }
-}
+import 'package:http/http.dart' as http;
+import 'constants.dart' as Constants;
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key, required this.title});
@@ -33,6 +18,26 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
+
+  var machineList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    updateMachines();
+  }
+
+  void updateMachines() async {
+    var response = await http.get(Uri.parse('${Constants.URL}/api/vending_machine'));
+    var j = jsonDecode(response.body);
+
+    var machines = j['data'];
+
+    setState(() {
+      machineList = machines;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,7 +61,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => InitialPage(title: 'initial',)),
+                        MaterialPageRoute(builder: (context) => const InitialPage()),
                       );
                     },
                     child: const Icon(
@@ -90,107 +95,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                color: const Color.fromRGBO(249, 251, 231, 1),
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
-
-                    Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        decoration: const BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30),
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Text(
-                                    'Máquina bué fixe',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const MachinePage(title: 'Machine',)),
-                                    );
-                                  },
-                                  child: const Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.white,
-                                      size: 35
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                    ),
-                    const SizedBox(height: 20),
-
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.15,
-                      decoration: const BoxDecoration(
-                        color: Colors.black12,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30),
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              'Máquina só fixe',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              //TODO
-                            },
-                            child: const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 35
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            MachineListWidget(machineList: machineList),
           ],
         ),
       ),

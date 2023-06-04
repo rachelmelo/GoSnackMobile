@@ -85,7 +85,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         Navigator.pop(context);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MachinePage(title: "test")),
+          MaterialPageRoute(builder: (context) => const MachinePage(title: "test", machineId: 1,)),
         );
         result = scanData;
       });

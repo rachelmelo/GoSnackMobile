@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'constants.dart' as Constants;
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key, required this.productImagePath, required this.productName, required this.slotNumber});
+  const ProductDetailsPage({super.key, required this.machineId, required this.productImagePath, required this.productName, required this.slotNumber});
 
+  final int machineId;
   final String productImagePath;
   final String productName;
   final int slotNumber;
@@ -17,6 +17,25 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+
+  int currentStock = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  updateStock();
+  }
+
+  void updateStock() async {
+    var response = await http.get(Uri.parse('${Constants.URL}/api/vending_machine/${widget.machineId}/slot/${widget.slotNumber}'));
+    var j = jsonDecode(response.body);
+    var data = j['data'];
+
+    setState(() {
+      currentStock = data['product_quantity'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -166,9 +185,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                       const SizedBox(height: 15),
 
-                      const Text(
-                        'Em stock: 3 un.',
-                        style: TextStyle(
+                      Text(
+                        'Em stock: $currentStock un.',
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 25,
                         ),

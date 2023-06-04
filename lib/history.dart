@@ -3,26 +3,6 @@ import 'package:teste/machine.dart';
 
 import 'initial.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HistoryPage(title: 'History Page'),
-    );
-  }
-}
-
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key, required this.title});
 
@@ -56,7 +36,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => InitialPage(title: 'initial',)),
+                        MaterialPageRoute(builder: (context) => const InitialPage()),
                       );
                     },
                     child: const Icon(
@@ -144,7 +124,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               const Padding(
                                 padding: EdgeInsets.all(20),
                                 child: Text(
-                                  'Máquina bué fixe',
+                                  'Máquina 1',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
@@ -155,7 +135,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                 onPressed: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const MachinePage(title: 'Machine',)),
+                                    MaterialPageRoute(builder: (context) => const MachinePage(title: 'Máquina 1', machineId: 1,)),
                                   );
                                 },
                                 child: const Icon(
@@ -210,7 +190,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           const Padding(
                             padding: EdgeInsets.all(20),
                             child: Text(
-                              'Máquina só fixe',
+                              'Máquina 2',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
@@ -219,7 +199,10 @@ class _HistoryPageState extends State<HistoryPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              //TODO
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const MachinePage(title: 'Máquina 2', machineId: 2,)),
+                              );
                             },
                             child: const Icon(
                               Icons.arrow_forward,

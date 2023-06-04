@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (username == "user" && password != "") {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => InitialPage(title: 'initial',)),
+                          MaterialPageRoute(builder: (context) => const InitialPage()),
                         );
 
                       } else if (username == "admin" && password != "") {

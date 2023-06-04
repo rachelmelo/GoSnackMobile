@@ -11,19 +11,16 @@ import 'history.dart';
 
 
 class InitialPage extends StatefulWidget {
-  InitialPage({super.key, required this.title});
-
-  final String title;
-
-  String credit = "0";
-
-  List<InitialPageItem> itemList = [];
+  const InitialPage({super.key});
 
   @override
   State<InitialPage> createState() => _InitialPageState();
 }
 
 class _InitialPageState extends State<InitialPage> {
+
+  num credit = 0;
+  List<InitialPageItem> itemList = [];
 
   @override
   void initState() {
@@ -37,10 +34,10 @@ class _InitialPageState extends State<InitialPage> {
     var j = jsonDecode(response.body);
     var data = j['data'];
 
+    var userCredit = data['credit'];
+
     setState(() {
-      var credit = data['credit'];
-      credit ??= 0;
-      widget.credit = "$credit€";
+      credit = userCredit;
     });
   }
 
@@ -56,7 +53,7 @@ class _InitialPageState extends State<InitialPage> {
     }
 
     setState(() {
-      widget.itemList = items;
+      itemList = items;
     });
   }
 
@@ -90,7 +87,7 @@ class _InitialPageState extends State<InitialPage> {
                   ),
                   SizedBox(height: 25),
                   Text(
-                    'Saldo: ${widget.credit} €',
+                    'Saldo: $credit €',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -124,9 +121,9 @@ class _InitialPageState extends State<InitialPage> {
               child: Expanded(
                   child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      itemCount: widget.itemList.length,
+                      itemCount: itemList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ItemWidget(item: widget.itemList[index]);
+                        return ItemWidget(item: itemList[index]);
                       }
                   )
               ),
