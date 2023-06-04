@@ -136,20 +136,17 @@ class _MachinePageState extends State<MachinePage> {
       }
     }
 
-    rows.addAll([
-      const SizedBox(height: 35),
-
-      Text(
-        'Temperatura atual: $temperature ºC',
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 25,
-        ),
-      ),
-    ]);
-
     if (widget.isAdmin) {
       rows.addAll([
+        const SizedBox(height: 35),
+
+        Text(
+          'Temperatura atual: $temperature ºC',
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 25,
+          ),
+        ),
         const SizedBox(height: 30),
 
         SizedBox(
