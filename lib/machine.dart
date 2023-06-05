@@ -24,7 +24,7 @@ class _MachinePageState extends State<MachinePage> {
 
   List<Widget> slots = [];
   num temperature = 0.0;
-  var slotData;
+  var slotData = [];
 
   @override
   void initState() {
